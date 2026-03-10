@@ -1,7 +1,7 @@
 # SatelliteCoverageAnalysis
 Technical Assessment for Dominion Dynamics. My goal is to create a 3D tactical dashboard that simulates and analyzes the line-of-sight (LOS) and data-link availability between ground assets and a satellite constellation over an area.
 
-![Preview]([Screenshot From 2026-03-10 18-21-00.png](https://github.com/codingbylily/SatelliteCoverageAnalysis/blob/a46d8be6fc17462f47de4b3c86642057b65d1393/Screenshot%20From%202026-03-10%2018-21-00.png))
+![Preview](https://github.com/codingbylily/SatelliteCoverageAnalysis/blob/a46d8be6fc17462f47de4b3c86642057b65d1393/Screenshot%20From%202026-03-10%2018-21-00.png)
 
 
 # Overview #
