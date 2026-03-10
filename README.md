@@ -1,6 +1,8 @@
 # SatelliteCoverageAnalysis
 Technical Assessment for Dominion Dynamics. My goal is to create a 3D tactical dashboard that simulates and analyzes the line-of-sight (LOS) and data-link availability between ground assets and a satellite constellation over an area.
 
+![Preview](Screenshot From 2026-03-10 18-21-00.png)
+
 
 # Overview #
 This project demonstrates a lightweight geospatial dashboard developed using CesiumJS within the Sandcastle Environment. The dashboard renders a 3D globe featuring stationary assets across the Canadian Arctic and provides real-time simulated satellite movements. This solution is designed for easy integration into web applications, aligning with Dominion Dynamics' mission to empower military coordination through adaptable, AI-driven capabilities.
