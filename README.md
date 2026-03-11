@@ -1,4 +1,4 @@
-# SatelliteCoverageAnalysis
+# Satellite Coverage Analysis
 Technical Assessment for Dominion Dynamics. My goal is to create a 3D tactical dashboard that simulates and analyzes the line-of-sight (LOS) and data-link availability between ground assets and a satellite constellation over an area.
 
 ![Preview](https://github.com/codingbylily/SatelliteCoverageAnalysis/blob/a46d8be6fc17462f47de4b3c86642057b65d1393/Screenshot%20From%202026-03-10%2018-21-00.png)
@@ -25,10 +25,12 @@ CesiumJS Webpack Example: https://github.com/CesiumGS/cesium-webpack-example.git
 If you clight on the **Standalone** button, you can see the dashboard in another windwow.
 ![Preview](https://github.com/codingbylily/SatelliteCoverageAnalysis/blob/465fa052163dd8d1056aa6045202d78cf07dc31d/Screenshot%20From%202026-03-10%2019-14-27.png)
 
-# Demo Video # 
+## Demo Video ## 
 https://drive.proton.me/urls/1NH6SJ0GW8#nCUyAJVpfxGD
 
 # Thought Process #
 To create the globe, I imported the Cesium Viewer, which offers excellent customization options for various basemaps. This flexibility allows users to tailor their maps to specific needs. For instance, utilizing a terrain basemap can be particularly beneficial for the Canadian Armed Forces, enabling them to plan routes and identify naturally defensible positions, like those near mountains.
 
 For the bases, I generated a GeoJSON file containing various geospatial points using geojson.io. Each base has been coded separately to allow for individual customization. This approach also ensures that each base remains distinct and confidential, preventing potential data compromise by keeping all base locations in a centralized database. This strategy enhances security while facilitating functional adaptability for each base's operational requirements.
+
+
