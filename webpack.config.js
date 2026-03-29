@@ -33,9 +33,13 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.czml$/i,
+        use: "raw-loader"
+      },       
+      {
         test: /\.(png|gif|jpg|jpeg|svg|xml|json)$/,
         use: ["url-loader"],
-      },
+      },   
     ],
   },
   plugins: [

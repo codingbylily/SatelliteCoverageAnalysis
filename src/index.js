@@ -1,3 +1,4 @@
+//import {accessToken} from "./js/CesiumConfig";
 import {
   Ion,
   Viewer,
@@ -14,12 +15,22 @@ import "cesium/Widgets/widgets.css";
 import "../src/css/main.css";
 
 // Your access token can be found at: https://cesium.com/ion/tokens.
-Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1M2I2Mzg3Zi01YzljLTRiOWUtYjAwYy05MTUwMmIxYzVlMzEiLCJpZCI6NDAwNTYzLCJpYXQiOjE3NzQ0OTU0MDJ9.7tRMZnxSxO_TJqOzPBk0hm1sJcsotocBcqUfYCwjjgU";
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMWZhZDg0Ny1kNGJjLTQxODMtYTU3My03NzBhYjcxMDhmYWIiLCJpZCI6NDAwNTYzLCJpYXQiOjE3NzMwMzAxNjN9.VeypxW7O3wbmAqHxknligxEN1ntPr5LwRxTv71drks8';
+
 
 // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
-const viewer = new Viewer("cesiumContainer", {
-  terrain: Terrain.fromWorldTerrain(),
+const viewer = new Cesium.Viewer('cesiumContainer', {
+  animation: true,
+  timeline: true,
+  terrain: Cesium.Terrain.fromWorldTerrain()
 });
+
+
+// set clock to a time inside your CZML availability and pause playback
+viewer.clock.currentTime = Cesium.JulianDate.fromIso8601('2012-03-15T10:20:00Z');
+viewer.clock.multiplier = 0;
+viewer.clock.shouldAnimate = false;
+
 
 // Add Cesium OSM Buildings, a global 3D buildings layer.
 const buildingTileset = await createOsmBuildingsAsync();
@@ -105,3 +116,24 @@ const BaseSix = viewer.entities.add({
     verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
   },
 });
+
+import czmlText from './data/example_satellite_data.czml';
+const czml = JSON.parse(czmlText);
+
+let satelliteDataSource = null;
+
+async function loadOrShowSatellites() {
+  if (satelliteDataSource) {
+    satelliteDataSource.show = true;
+    viewer.zoomTo(satelliteDataSource);
+    viewer.camera.flyHome(0);
+    return;
+  }
+  satelliteDataSource = await Cesium.CzmlDataSource.load(czml);
+  viewer.dataSources.add(satelliteDataSource);
+  viewer.zoomTo(satelliteDataSource);
+  viewer.camera.flyHome(0);
+}
+
+document.getElementById('load-satellites').addEventListener('click', loadOrShowSatellites);
+
