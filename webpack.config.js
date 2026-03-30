@@ -37,9 +37,17 @@ module.exports = {
         use: "raw-loader"
       },       
       {
+        test: /\.(glb|gltf)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/models/CesiumDrone.glb'
+        }
+      },
+      {
         test: /\.(png|gif|jpg|jpeg|svg|xml|json)$/,
-        use: ["url-loader"],
-      },   
+        exclude: /\.(glb|gltf)$/,
+        use: ['url-loader'],
+      }, 
     ],
   },
   plugins: [

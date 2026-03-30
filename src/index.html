@@ -10,10 +10,19 @@
         <div id="cesiumContainer" class="h-100 p-0 m-0"></div>
         <div id="toolbar" class="position-absolute col-lg-4 col-lg-6">
           <button id="load-satellites" class="cesium-button">Satellites</button>
+          <button id="track-satellite"class="cesium-button">Satellites Tracker</button>
+          <button id="track-drone"class="cesium-button">Drone</button>
+          <select id="trk-frame" class="cesium-button" aria-label="Tracking reference frame">
+            <option value="AUTODETECT">Tracking reference frame: Auto-detect</option>
+            <option value="INERTIAL">Tracking reference frame: Inertial</option>
+            <option value="VELOCITY">Tracking reference frame: Velocity</option>
+            <option value="ENU">Tracking reference frame: East-North-Up</option>
+        </select>
         </div>
       </div>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="./index.js" type="module"></script>
   </body>
 </html>

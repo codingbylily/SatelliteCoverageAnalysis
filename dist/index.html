@@ -8,17 +8,15 @@
     <section class="container-fluid">
       <div class="row position-relative">
         <div id="cesiumContainer" class="h-100 p-0 m-0"></div>
-        <div id="toolbar" class="position-absolute col-lg-4 col-lg-6" >
-          <select class="cesium-button" aria-label="Default select example">
-            <option selected>Satellites</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+        <div id="toolbar" class="position-absolute col-lg-4 col-lg-6">
+          <button id="load-satellites" class="cesium-button">Satellites</button>
+          <button id="track-satellite">Satellite Tracker</button>
+          <button id="track-drone">Drone</button>
         </div>
       </div>
     </section>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="./index.js" type="module"></script>
   </body>
 </html>

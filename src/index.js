@@ -117,8 +117,10 @@ const BaseSix = viewer.entities.add({
   },
 });
 
-import czmlText from './data/example_satellite_data.czml';
-const czml = JSON.parse(czmlText);
+//import example data of satellite paths from czml file 
+
+import czml_example_satellite from './data/example_satellite_data.czml';
+const czml_satellite = JSON.parse(czml_example_satellite);
 
 let satelliteDataSource = null;
 
@@ -129,11 +131,103 @@ async function loadOrShowSatellites() {
     viewer.camera.flyHome(0);
     return;
   }
-  satelliteDataSource = await Cesium.CzmlDataSource.load(czml);
+  satelliteDataSource = await Cesium.CzmlDataSource.load(czml_satellite);
   viewer.dataSources.add(satelliteDataSource);
   viewer.zoomTo(satelliteDataSource);
   viewer.camera.flyHome(0);
 }
 
+//link satellites to button 
+//viewers can click button to view sample satellite data
 document.getElementById('load-satellites').addEventListener('click', loadOrShowSatellites);
 
+
+//load satellite and drone tracking data
+import czmlExampleSatelliteAndDrone from './data/tracking.czml';
+import droneUrl from './data/CesiumDrone.glb';
+const czml_satellite_drone = JSON.parse(czmlExampleSatelliteAndDrone);
+
+let satelliteTracker, drone;
+let satelliteStopTime, droneStopTime, startTime;
+
+Cesium.CzmlDataSource.load(czml_satellite_drone).then(ds => {
+  viewer.dataSources.add(ds);
+
+  satelliteTracker = ds.entities.getById('Satellite/ISS');
+  drone = ds.entities.getById('CesiumDrone');
+
+  if (satelliteTracker) satelliteTracker.viewFrom = new Cesium.Cartesian3(-300, 20, 100);
+  if (drone) {
+    drone.viewFrom = new Cesium.Cartesian3(-50, 0, 5);
+    if (drone.model) {
+      drone.model.uri = droneUrl;
+      drone.model.minimumPixelSize = drone.model.minimumPixelSize || 64;
+      drone.model.maximumScale = drone.model.maximumScale || 20000;
+    }
+  }
+
+  const satPos = satelliteTracker && satelliteTracker.position;
+  const satAvail = satPos && (satPos.availability || satelliteTracker.availability);
+  if (satAvail) {
+    startTime = satAvail.start;
+    satelliteStopTime = satAvail.stop;
+  } else {
+    startTime = viewer.clock.startTime || Cesium.JulianDate.now();
+    satelliteStopTime = viewer.clock.stopTime || Cesium.JulianDate.addDays(startTime, 1, new Cesium.JulianDate());
+  }
+
+  const drPos = drone && drone.position;
+  const drAvail = drPos && (drPos.availability || drone.availability);
+  droneStopTime = drAvail ? drAvail.stop : satelliteStopTime;
+
+  document.getElementById('track-satellite').addEventListener('click', () => {
+    viewer.clock.stopTime = satelliteStopTime;
+    viewer.clock.currentTime = startTime;
+    viewer.clock.multiplier = 30;
+    if (viewer.timeline) viewer.timeline.zoomTo(startTime, satelliteStopTime);
+    viewer.trackedEntity = satelliteTracker;
+  });
+
+  document.getElementById('track-drone').addEventListener('click', () => {
+    viewer.clock.stopTime = droneStopTime;
+    viewer.clock.currentTime = startTime;
+    viewer.clock.multiplier = 1;
+    if (viewer.timeline) viewer.timeline.zoomTo(startTime, droneStopTime);
+    viewer.trackedEntity = drone;
+  });
+});
+
+
+// call after DOM ready
+function initTrackingControls() {
+  const select = document.getElementById('trk-frame');
+  if (!select) return;
+
+  function setTrackingFrame(frame) {
+    if (satelliteTracker) satelliteTracker.trackingReferenceFrame = frame;
+    if (drone) drone.trackingReferenceFrame = frame;
+
+    const tracked = viewer.trackedEntity;
+    if (tracked) {
+      viewer.trackedEntity = undefined;
+      viewer.trackedEntity = tracked;
+    }
+  }
+
+  select.addEventListener('change', (e) => {
+    const val = e.target.value;
+    const frame =
+      val === 'AUTODETECT' ? Cesium.TrackingReferenceFrame.AUTODETECT :
+      val === 'INERTIAL'   ? Cesium.TrackingReferenceFrame.INERTIAL   :
+      val === 'VELOCITY'   ? Cesium.TrackingReferenceFrame.VELOCITY   :
+                            Cesium.TrackingReferenceFrame.ENU;
+    setTrackingFrame(frame);
+  });
+}
+
+// ensure DOM is ready before wiring controls
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTrackingControls);
+} else {
+  initTrackingControls();
+}
